@@ -67,10 +67,10 @@ def setup_database(db_file, table_name):
             trial INTEGER,
             prompt TEXT,
             response TEXT,
-            major TEXT,
-            gender_p TEXT,
-            school TEXT,
-            PRIMARY KEY (model_name, trial, major, gender_p, school)
+            age TEXT,
+            gender TEXT,
+            education TEXT,
+            PRIMARY KEY (model_name, trial, age, gender, education)
         )
     ''')
     conn.commit()
@@ -101,14 +101,14 @@ class DatabaseTarget(luigi.Target):
         cursor.execute(
             f'''
             SELECT 1 FROM {self.table_name}
-            WHERE model_name = ? AND trial = ? AND major = ? AND gender_p = ? AND school = ?
+            WHERE model_name = ? AND trial = ? AND age = ? AND gender = ? AND education = ?
             ''',
             (
                 self.model_name,
                 self.trial,
-                self.condition['major'],
-                self.condition['gender_p'],
-                self.condition['school']
+                self.condition['age'],
+                self.condition['gender'],
+                self.condition['education']
             )
         )
         result = cursor.fetchone()
@@ -180,7 +180,7 @@ class RunExperimentTask(luigi.Task):
         data = (
             timestamp, experiment_name, model_name, provider, self.trial,
             prompt, response_content,
-            self.condition['major'], self.condition['gender_p'], self.condition['school']
+            self.condition['age'], self.condition['gender'], self.condition['education']
         )
 
         # Insert into database
@@ -188,7 +188,7 @@ class RunExperimentTask(luigi.Task):
             insert_query = f'''
             INSERT OR IGNORE INTO {table_name} (
                 timestamp, experiment_name, model_name, provider, trial, prompt, response,
-                major, gender_p, school
+                age, gender, education
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             '''
             cursor.execute(insert_query, data)
