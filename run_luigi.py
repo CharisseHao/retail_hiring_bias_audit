@@ -23,6 +23,13 @@ DATABASE_FILE = None
 DB_LOCK = threading.Lock()
 TERMINATE_FLAG = threading.Event()
 
+data_folder = "data"
+
+# Delete the folder if it exists
+if os.path.exists(data_folder):
+    import shutil
+    shutil.rmtree(data_folder)
+
 def setup_logging(verbose):
     # Set up logging
     logging_level = logging.DEBUG if verbose else logging.INFO
