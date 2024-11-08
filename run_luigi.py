@@ -25,10 +25,10 @@ TERMINATE_FLAG = threading.Event()
 
 data_folder = "data"
 
-# Delete the folder if it exists
-if os.path.exists(data_folder):
-    import shutil
-    shutil.rmtree(data_folder)
+# # Delete the folder if it exists
+# if os.path.exists(data_folder):
+#     import shutil
+#     shutil.rmtree(data_folder)
 
 def setup_logging(verbose):
     # Set up logging
@@ -75,9 +75,9 @@ def setup_database(db_file, table_name):
             prompt TEXT,
             response TEXT,
             age TEXT,
-            gender TEXT,
+            name TEXT,
             education TEXT,
-            PRIMARY KEY (model_name, trial, age, gender, education)
+            PRIMARY KEY (model_name, trial, age, name, education)
         )
     ''')
     conn.commit()
@@ -108,13 +108,13 @@ class DatabaseTarget(luigi.Target):
         cursor.execute(
             f'''
             SELECT 1 FROM {self.table_name}
-            WHERE model_name = ? AND trial = ? AND age = ? AND gender = ? AND education = ?
+            WHERE model_name = ? AND trial = ? AND age = ? AND name = ? AND education = ?
             ''',
             (
                 self.model_name,
                 self.trial,
                 self.condition['age'],
-                self.condition['gender'],
+                self.condition['name'],
                 self.condition['education']
             )
         )
@@ -187,7 +187,7 @@ class RunExperimentTask(luigi.Task):
         data = (
             timestamp, experiment_name, model_name, provider, self.trial,
             prompt, response_content,
-            self.condition['age'], self.condition['gender'], self.condition['education']
+            self.condition['age'], self.condition['name'], self.condition['education']
         )
 
         # Insert into database
@@ -195,7 +195,7 @@ class RunExperimentTask(luigi.Task):
             insert_query = f'''
             INSERT OR IGNORE INTO {table_name} (
                 timestamp, experiment_name, model_name, provider, trial, prompt, response,
-                age, gender, education
+                age, name, education
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             '''
             cursor.execute(insert_query, data)
