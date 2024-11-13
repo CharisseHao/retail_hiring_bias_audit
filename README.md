@@ -12,4 +12,4 @@ Instructions:
 - `pip install -r requirements.txt`
 - `python3 run_luigi.py retail_hiring.yml`
   - for verbose debugging: `python3 run_luigi.py --verbose retail_hiring.yml`
-  <!-- - to replace existing output file (specified in yml), otherwise will resume: `python3 run_luigi.py --replace retail_hiring.yml` -->
+  - to replace existing output file (specified in yml), otherwise will resume: `python3 run_luigi.py --replace retail_hiring.yml`
