@@ -26,27 +26,27 @@ def parse_percentage(x) -> int:
     pattern = r'\b\d{1,2}%|percent|pct|pct%'
     matches = re.findall(pattern, x)
     matches = set([float(m.strip('%')) for m in matches])
-    return float(matches.mean())
-
-    if not matches:
-        return np.nan
-
-    amounts = []
-    for amount_str in matches:
-        amount_num = float(amount_str.replace('%', ''))
-        amounts.append(amount_num)
-
+    
     # Filter percents bewteen 0 and 100%
-    valid_amounts = [amount for amount in amounts if 0 <= amount <= 100]
+    valid_amounts = [amount for amount in matches if 0 <= amount <= 100]
+    return sum(valid_amounts) / len(valid_amounts)
 
-    return valid_amounts
-    if not valid_amounts:
-        return np.nan
+#     if not matches:
+#         return np.nan
 
-    # Handle ranges by averaging the first two valid amounts if a range is indicated
-    if '-' in x and len(valid_amounts) >= 2:
-        average_amount = sum(valid_amounts[:2]) / 2
-    else:
-        average_amount = sum(valid_amounts) / len(valid_amounts)
+#     amounts = []
+#     for amount_str in matches:
+#         amount_num = float(amount_str.replace('%', ''))
+#         amounts.append(amount_num)
 
-    return int(round(average_amount))
+#     return valid_amounts
+#     if not valid_amounts:
+#         return np.nan
+
+#     # Handle ranges by averaging the first two valid amounts if a range is indicated
+#     if '-' in x and len(valid_amounts) >= 2:
+#         average_amount = sum(valid_amounts[:2]) / 2
+#     else:
+#         average_amount = sum(valid_amounts) / len(valid_amounts)
+
+#     return int(round(average_amount))
