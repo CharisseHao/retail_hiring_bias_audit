@@ -1,4 +1,4 @@
-# Salary Negotiation - Names x Major audit
+# Retail Hiring Suggestions - Age x Names x Education audit
 
 * `step1_prompt_bulk_generator.ipynb` inputs `input_data\audit_names.xlsx` and generates prompts in OpenAI Batch jsonl format. These must be submitted to the [OpenAI Batch API](https://platform.openai.com/batches) or for open-weight models, can be submitted with [vllm batch](https://github.com/vllm-project/vllm/blob/main/examples/offline_inference_openai.md). They are large but easily compressible, so they are stored as .zip in GitHub. To replicate this with OpenAI or vllm, you must unzip these and only submit the raw .jsonl file.
 * OpenAI or vllm returns a result .jsonl file. These must be placed in `output_data`.
