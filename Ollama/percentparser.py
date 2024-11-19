@@ -15,38 +15,25 @@ def parse_percentage(x) -> int:
     Returns:
     int: The average of the valid percentages, or np.nan if none are valid.
     """
-    if pd.isna(x):
+    if pd.isna(x) or (len(x) == 0):
         return np.nan
 
     x = x.lower().strip()
-    # Normalize separators and remove irrelevant words
-    x = x.replace('–', '-').replace(' to ', '-').replace(' and ', '-')
 
     # Regex pattern to match percents
-    pattern = r'\b\d{1,2}%|percent|pct|pct%'
+    pattern = r'-?\d+(?:%| pct| percent|pct%)?' #r'-?\d*%|percent|pct|pct%'
     matches = re.findall(pattern, x)
-    matches = set([float(m.strip('%')) for m in matches])
-    
-    # Filter percents bewteen 0 and 100%
-    valid_amounts = [amount for amount in matches if 0 <= amount <= 100]
-    return sum(valid_amounts) / len(valid_amounts)
 
-#     if not matches:
-#         return np.nan
+    # Extract numbers
+    valid_amounts = []
+    for match in matches:
+        # Strip non-numeric parts and convert to float
+        number = re.search(r'-?\d*', match).group()
+        if len(number) > 0:
+            number = float(number)
+            if 0 <= number <= 100:
+                valid_amounts.append(number)
 
-#     amounts = []
-#     for amount_str in matches:
-#         amount_num = float(amount_str.replace('%', ''))
-#         amounts.append(amount_num)
-
-#     return valid_amounts
-#     if not valid_amounts:
-#         return np.nan
-
-#     # Handle ranges by averaging the first two valid amounts if a range is indicated
-#     if '-' in x and len(valid_amounts) >= 2:
-#         average_amount = sum(valid_amounts[:2]) / 2
-#     else:
-#         average_amount = sum(valid_amounts) / len(valid_amounts)
-
-#     return int(round(average_amount))
+    if valid_amounts:
+        return sum(valid_amounts) / len(valid_amounts)
+    return np.nan
