@@ -1,6 +1,6 @@
 experiment_name: "hiring_suggestions"
 num_gpu: 1
-num_trials_per_condition: 1 # change to 3
+num_trials_per_condition: 1
 models:
   - name: "llama3:8b-instruct-q4_K_M"
     provider: "ollama"
