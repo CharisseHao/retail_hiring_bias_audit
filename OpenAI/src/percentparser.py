@@ -5,9 +5,8 @@ import pandas as pd
 def parse_percentage(x) -> int:
     """
     Function to extract percents from a string and return their average.
-    Handles ranges like "60-70%" by averaging them. Designed for parsing 
-    percentages, considering only percents between 0 and 100. Ignores amounts 
-    outside this range.
+    Designed for parsing percentages, considering only percents between 
+    0 and 100. Ignores amounts outside this range.
 
     Parameters:
     x (str): The string containing the percent(s).
