@@ -54,9 +54,9 @@ Ensure that you have `pip` installed before proceeding with this option.
             ```
     - Download Results:
         1. Once the request is processed, OpenAI (or vllm) will return a result `.jsonl` file. To download the result, replace `JOB_ID` with the actual Job ID:
-        ```
-        batchwizard download JOB_ID
-        ```
+            ```
+            batchwizard download JOB_ID
+            ```
         2. Move the downloaded result file into the `output_data` folder.
 2. `step2_parse_clean_data.ipynb`
     - Reads all `.jsonl` or `.jsonl.zip` files in the `output_data` folder, extracts the percentage values from the responses, and stores all cleaned data into `processed_data/age_name_edu_data.csv.zip`
